@@ -834,12 +834,13 @@ body.dark-mode .message-cascade-controls .cascade-delete-btn {
     text-align: center;
 }
 
+/* Consolidated: thought-summary styles */
 .thought-summary-details {
     margin-bottom: 10px;
     font-size: 13px;
     border: 1px solid var(--border-tertiary);
     border-radius: 5px;
-    background-color: var(--bg-tertiary);
+    background-color: var(--bg-secondary);
 }
 .thought-summary-details summary {
     cursor: pointer;
@@ -858,33 +859,19 @@ body.dark-mode .message-cascade-controls .cascade-delete-btn {
     font-size: 14px;
     display: inline-block;
 }
-.thought-summary-details {
-    margin-bottom: 10px;
-    font-size: 13px;
-    border: 1px solid var(--border-tertiary);
-    border-radius: 5px;
-    background-color: var(--bg-secondary);
+.thought-summary-details[open] summary {
+    border-bottom: 1px solid var(--border-tertiary);
 }
-
+.thought-summary-content {
+    padding: 8px 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    word-wrap: break-word;
+}
 .thought-summary-content ul,
 .thought-summary-content ol {
-    padding-left: 2em; 
-}
-
-.thought-summary-content {
-    padding: 8px 10px;
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--text-primary);
-    word-wrap: break-word;
-}
-
-.thought-summary-content {
-    padding: 8px 10px;
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--text-primary);
-    word-wrap: break-word;
+    padding-left: 2em;
 }
 
 /* --- Prism.js Custom Overrides --- */

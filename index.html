@@ -4,13 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gemini PWA Mk-II</title>
+    <!-- Security: Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' 'unsafe-eval' https://esm.run https://cdnjs.cloudflare.com;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com;
+        img-src 'self' data: blob: https:;
+        connect-src 'self' https://generativelanguage.googleapis.com https://www.googleapis.com;
+        media-src 'self' blob:;
+        worker-src 'self';
+        manifest-src 'self';
+    ">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" id="theme-color-meta" content="#4a90e2">
-    <!-- RobotoフォントとMaterial Symbols を読み込む -->
+    <!-- RobotoフォントとMaterial Symbols を読み込む (Performance: preconnect + font-display) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" />
     <!-- CSSファイルを外部から読み込む -->
     <link rel="stylesheet" href="style.css?v=0.52">
     <link rel="stylesheet" href="prism.css" />
@@ -22,24 +34,24 @@
     <div class="app-container">
 
         <!-- チャット画面 -->
-        <div id="chat-screen" class="screen active">
-            <div id="chat-overlay"></div> 
-            <div id="header-trigger-area"></div>
-            <header class="app-header">
-                <button id="goto-history-btn" class="header-button" title="履歴一覧へ"><span class="material-symbols-outlined">menu</span></button>
-                <h1 id="chat-title">新規チャット</h1>                
-                <button id="new-chat-btn" class="new-chat-button" title="新規チャットを開始"><span class="material-symbols-outlined">add</span></button>
-                <button id="goto-settings-btn" class="header-button" title="設定へ"><span class="material-symbols-outlined">settings</span></button>
+        <div id="chat-screen" class="screen active" role="application" aria-label="チャット画面">
+            <div id="chat-overlay" aria-hidden="true"></div>
+            <div id="header-trigger-area" aria-hidden="true"></div>
+            <header class="app-header" role="banner">
+                <button id="goto-history-btn" class="header-button" title="履歴一覧へ" aria-label="履歴一覧を開く"><span class="material-symbols-outlined" aria-hidden="true">menu</span></button>
+                <h1 id="chat-title">新規チャット</h1>
+                <button id="new-chat-btn" class="new-chat-button" title="新規チャットを開始" aria-label="新規チャットを開始"><span class="material-symbols-outlined" aria-hidden="true">add</span></button>
+                <button id="goto-settings-btn" class="header-button" title="設定へ" aria-label="設定画面を開く"><span class="material-symbols-outlined" aria-hidden="true">settings</span></button>
             </header>
 
 
 
 
-            <main class="main-content">
+            <main class="main-content" role="main" aria-label="メインコンテンツ">
                 <!-- システムプロンプト表示/編集エリア -->
-                <div id="system-prompt-area" class="system-prompt-area">
+                <div id="system-prompt-area" class="system-prompt-area" role="region" aria-label="システムプロンプト設定">
                     <details id="system-prompt-details">
-                        <summary>システムプロンプト</summary>
+                        <summary aria-label="システムプロンプトの詳細を表示">システムプロンプト</summary>
                         <div class="system-prompt-content">
                             <textarea id="system-prompt-editor" aria-label="システムプロンプト編集"></textarea>
                             <div class="system-prompt-actions">
@@ -597,28 +609,28 @@
         </div>
     </div>
 
-    <!-- カスタムダイアログテンプレート -->
-    <dialog id="alertDialog" class="custom-dialog">
-        <p class="dialog-message"></p>
+    <!-- カスタムダイアログテンプレート (Accessibility: aria-modal) -->
+    <dialog id="alertDialog" class="custom-dialog" aria-modal="true" aria-labelledby="alertDialog" role="alertdialog">
+        <p class="dialog-message" role="alert"></p>
         <div class="dialog-actions">
-            <button value="ok" class="dialog-ok-btn">OK</button>
+            <button value="ok" class="dialog-ok-btn" aria-label="閉じる">OK</button>
         </div>
     </dialog>
 
-    <dialog id="confirmDialog" class="custom-dialog">
+    <dialog id="confirmDialog" class="custom-dialog" aria-modal="true" aria-labelledby="confirmDialog" role="dialog">
         <p class="dialog-message"></p>
         <div class="dialog-actions">
-            <button value="cancel" class="dialog-cancel-btn">キャンセル</button>
-            <button value="ok" class="dialog-ok-btn">OK</button>
+            <button value="cancel" class="dialog-cancel-btn" aria-label="キャンセルして閉じる">キャンセル</button>
+            <button value="ok" class="dialog-ok-btn" aria-label="確認して実行">OK</button>
         </div>
     </dialog>
 
-    <dialog id="promptDialog" class="custom-dialog">
+    <dialog id="promptDialog" class="custom-dialog" aria-modal="true" aria-labelledby="promptDialog" role="dialog">
         <label class="dialog-message" for="promptInput"></label>
-        <input type="text" id="promptInput" class="dialog-input">
+        <input type="text" id="promptInput" class="dialog-input" aria-required="true">
         <div class="dialog-actions">
-            <button value="cancel" class="dialog-cancel-btn">キャンセル</button>
-            <button value="ok" class="dialog-ok-btn">OK</button>
+            <button value="cancel" class="dialog-cancel-btn" aria-label="キャンセルして閉じる">キャンセル</button>
+            <button value="ok" class="dialog-ok-btn" aria-label="入力内容を確定">OK</button>
         </div>
     </dialog>
 
